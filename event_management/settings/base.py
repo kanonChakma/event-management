@@ -17,7 +17,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "event_management.apps.accounts",
-    "event_management.apps.core",
+    "event_management.apps.events",
 ]
 
 MIDDLEWARE = [
@@ -88,8 +88,13 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 STATIC_URL = "/static/"
+
 STATIC_ROOT = BASE_DIR.parent.parent / "static"
+
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = "/media/"
+
 MEDIA_ROOT = BASE_DIR.parent.parent / "media"
+
+AUTH_USER_MODEL = "accounts.NewUser"

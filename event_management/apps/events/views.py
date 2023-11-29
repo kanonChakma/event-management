@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import View
@@ -63,7 +64,7 @@ class RegisterEvent(View):
             event.available_slots += 1
             event.save()
             registration.delete()
-            return redirect("event_lists")
+            return redirect("api_events:event_lists")
 
         else:
             if event.available_slots > 0:
@@ -74,7 +75,21 @@ class RegisterEvent(View):
                 registration.save()
                 event.save()
 
-        return redirect("event_lists")
+        return redirect("api_events:event_lists")
+
+
+class EventSearch(View):
+    template_name = "events/event_search.html"
+
+    def get(self, request):
+        query = request.GET.get("search", "")
+        events = Event.objects.filter(
+            Q(title__icontains=query)
+            | Q(description__icontains=query)
+            | Q(location_name__icontains=query)
+        )
+        context = {"events": events, "query": query}
+        return render(request, self.template_name, context)
 
 
 class EventListView(APIView):
@@ -98,7 +113,7 @@ class EventDetailsView(APIView):
             )
 
 
-class RegisterEvent(APIView):
+class RegisterEventView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, event_id, format=None):

@@ -22,7 +22,7 @@
 
               <form
                 class="form"
-                action="{% url 'register_event' event.pk %}"
+                action="{% url 'api_events:register_event' event.pk %}"
                 method="POST"
               >
                 {% csrf_token %}
@@ -45,7 +45,7 @@
             <form class="form" action="" method="GET">
               {% csrf_token %}
               <a
-                href="{% url 'event_details' event.pk %}"
+                href="{% url 'api_events:event_details' event.pk %}"
                 class="text-indigo-500 inline-flex items-center"
               >
                 More

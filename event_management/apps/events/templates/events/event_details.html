@@ -13,7 +13,7 @@
                 </h2>
                 {% if user.is_authenticated and event.available_slots > 0 %}
                     <div class="flex items-center justify-between">
-                        <form class="form" action="{% url 'register_event' event.pk %}" method="POST">
+                        <form class="form" action="{% url 'api_events:register_event' event.pk %}" method="POST">
                             {% csrf_token %}
                             <button
                                 type="submit"
@@ -25,7 +25,7 @@
                             </button>
                         </form>
                         
-                        <form class="form" action="{% url 'register_event' event.pk %}" method="POST">
+                        <form class="form" action="{% url 'api_events:register_event' event.pk %}" method="POST">
                             {% csrf_token %}
                             <button
                                 type="submit"

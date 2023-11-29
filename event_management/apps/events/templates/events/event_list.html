@@ -14,7 +14,7 @@
             </h2>
             {% if user.is_authenticated and event_data.event.available_slots > 0 %}
                 <div class="flex items-center justify-between">
-                    <form class="form" action="{% url 'register_event' event_data.event.pk %}" method="POST">
+                    <form class="form" action="{% url 'api_events:register_event' event_data.event.pk %}" method="POST">
                         {% csrf_token %}
                         <button
                             type="submit"
@@ -26,7 +26,7 @@
                         </button>
                     </form>
                     
-                    <form class="form" action="{% url 'register_event' event_data.event.pk %}" method="POST">
+                    <form class="form" action="{% url 'api_events:register_event' event_data.event.pk %}" method="POST">
                         {% csrf_token %}
                         <button
                             type="submit"
@@ -53,7 +53,7 @@
           >
           <form class="form" action="" method="GET">
             {% csrf_token %}
-            <a href="{% url 'event_details' event_data.event.pk %}" class="text-indigo-500 inline-flex items-center">
+            <a href="{% url 'api_events:event_details' event_data.event.pk %}" class="text-indigo-500 inline-flex items-center">
               More
               <svg
                 class="w-4 h-4 ml-2"

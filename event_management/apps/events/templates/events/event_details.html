@@ -1,0 +1,74 @@
+{% extends "base.html" %} 
+{% block content %} 
+<section class="text-gray-600 body-font overflow-hidden">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="mx-auto flex flex-wrap">
+        <div class="lg:w-3/5 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+          
+            <div class="flex items-center justify-between mb-5">
+                <h2
+                  class="sm:text-3xl text-xl title-font font-medium text-gray-900 mb-4 text-transform: uppercase"
+                >
+                  {{event.title}}
+                </h2>
+                {% if user.is_authenticated and event.available_slots > 0 %}
+                    <div class="flex items-center justify-between">
+                        <form class="form" action="{% url 'api_events:register_event' event.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="{% if is_registered %}text-green-700 font-medium rounded-md text-md px-1 py-1 text-center me-2 mb-2 cursor-not-allowed{% else %} text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-small rounded-sm text-md px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 dark:focus:ring-red-900{% endif %}"
+                                {% if is_registered %}disabled{% endif %}
+                            >
+                                {% if is_registered %} REGISTERED {% else %}
+                                REGISTER {% endif %}
+                            </button>
+                        </form>
+                        
+                        <form class="form" action="{% url 'api_events:register_event' event.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="{% if is_registered %}text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none font-small rounded-sm text-md px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 {% else %}text-gray-700 font-medium rounded-md text-md px-1 py-1 text-center me-2 mb-2 cursor-not-allowed{% endif %}"
+                                {% if is_registered %}{%else%}disabled {% endif %}
+                            >
+                                REMOVE
+                            </button>
+                        </form>
+                    </div>
+                {%else%}
+                <button
+                class="text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-small rounded-sm text-sm px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 dark:focus:ring-red-900"
+            >
+             No available slots   
+            </button>
+                {% endif %}
+              </div>
+
+          <p class="leading-relaxed mb-4">
+              {{event.description}}
+          </p>
+        </div>
+
+        <div class="lg:w-2/5 w-full lg:pr-10 lg:py-6 mb-6 lg:mb-0">
+            <div class="flex border-t border-gray-200 py-2">
+                <span class="text-gray-500">Location</span>
+                <span class="ml-auto text-gray-900">{{event.location_name}}</span>
+              </div>
+              <div class="flex border-t border-gray-200 py-2">
+                <span class="text-gray-500">Time</span>
+                <span class="ml-auto text-gray-900">{{event.time}}</span>
+              </div>
+              <div class="flex border-t border-gray-200 py-2">
+                <span class="text-gray-500">Available Slots</span>
+                <span class="ml-auto text-gray-900">{{event.available_slots}}</span>
+              </div>
+              <div class="flex border-t border-b mb-6 border-gray-200 py-2">
+                <span class="text-gray-500">Date</span>
+                <span class="ml-auto text-gray-900">{{event.date}}</span>
+              </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

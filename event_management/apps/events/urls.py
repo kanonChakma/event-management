@@ -1,11 +1,17 @@
 from django.urls import path
 
-from .views import EventListView, UserRegisteredEventListView
+from .views import EventLists, EventSearch, RegisterEvent, UserRegisteredEventLists
+
+app_name = "api_events"
 
 urlpatterns = [
-    path("", UserRegisteredEventListView.as_view(), name="register_event_lists"),
-    path("all/", EventListView.as_view(), name="event_lists"),
+    path("", UserRegisteredEventLists.as_view(), name="register_event_lists"),
+    path("all/", EventLists.as_view(), name="event_lists"),
+    path("<int:event_id>/", RegisterEvent.as_view(), name="event_details"),
+    path("event_search/", EventSearch.as_view(), name="event_search"),
     path(
-        "register/<int:event_id>", EventListView.as_view(), name="registration_create"
+        "register/<int:event_id>/",
+        RegisterEvent.as_view(),
+        name="register_event",
     ),
 ]

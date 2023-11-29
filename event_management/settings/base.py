@@ -18,6 +18,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "event_management.apps.accounts",
     "event_management.apps.events",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -98,3 +99,5 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR.parent.parent / "media"
 
 AUTH_USER_MODEL = "accounts.NewUser"
+
+LOGIN_URL = "/api/users/login/"

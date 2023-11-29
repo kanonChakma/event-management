@@ -36,6 +36,15 @@ class EventListView(TemplateView):
 
 
 class RegisterEventView(View):
+    template_name = "events/event_details.html"
+
+    def get(self, request, event_id):
+        event = get_object_or_404(Event, pk=event_id)
+        user = request.user
+        registration = Registration.objects.filter(user=user, event=event).exists()
+        context = {"event": event, "is_registered": registration}
+        return render(request, self.template_name, context)
+
     def post(self, request, event_id):
         if not request.user.is_authenticated:
             return redirect("login")

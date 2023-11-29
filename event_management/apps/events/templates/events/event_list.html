@@ -51,7 +51,9 @@
           <div
             class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full justify-between"
           >
-            <a class="text-indigo-500 inline-flex items-center">
+          <form class="form" action="" method="GET">
+            {% csrf_token %}
+            <a href="{% url 'event_details' event_data.event.pk %}" class="text-indigo-500 inline-flex items-center">
               More
               <svg
                 class="w-4 h-4 ml-2"
@@ -66,7 +68,7 @@
                 <path d="M12 5l7 7-7 7"></path>
               </svg>
             </a>
-
+          </form>
             <div>
                 <span
               class="text-gray-400 text-sm border-r-2 border-gray-200 mr-1 ml-1"

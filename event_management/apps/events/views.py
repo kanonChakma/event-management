@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
+from django.views import View
 from django.views.generic import TemplateView
 
 from .models import Event, Registration
@@ -31,3 +33,29 @@ class EventListView(TemplateView):
         context["events"] = event_data
 
         return context
+
+
+class RegisterEventView(View):
+    def post(self, request, event_id):
+        if not request.user.is_authenticated:
+            return redirect("login")
+
+        event = get_object_or_404(Event, pk=event_id)
+        registration = Registration.objects.filter(user=request.user, event=event)
+
+        if registration.exists():
+            event.available_slots += 1
+            event.save()
+            registration.delete()
+            return redirect("event_lists")
+
+        else:
+            if event.available_slots > 0:
+                registration = Registration(
+                    user=request.user, event=event, registration_date=timezone.now()
+                )
+                event.available_slots -= 1
+                registration.save()
+                event.save()
+
+        return redirect("event_lists")

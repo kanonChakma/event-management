@@ -12,52 +12,47 @@
             >
               {{event_data.event.title}}
             </h2>
-            {% if user.is_authenticated %}
-              {% if event_data.is_registered %}
-                <span class="text-green-500 mr-3 inline-flex items-center ml-auto leading-none text-sm">
-                  <svg
-                    class="w-4 h-4 mr-1"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M6 12l2 2 4-4"></path>
-                  </svg>
-                  Registered
-                </span>
-              {% else %}
-                <a class="text-indigo-500 inline-flex items-center ml-auto" href="{% url 'registration_create' event_data.event.pk%}">
-                  Register
-                  <svg
-                    class="w-4 h-4 ml-2"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M4.93 4.93l14.14 14.14"></path>
-                  </svg>
-                </a>
-              {% endif %}
-            {% else %}
-              <!-- Code for non-authenticated users -->
+            {% if user.is_authenticated and event_data.event.available_slots > 0 %}
+                <div class="flex items-center justify-between">
+                    <form class="form" action="{% url 'register_event' event_data.event.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="{% if event_data.is_registered %}text-green-700 font-medium rounded-md text-xs px-1 py-1 text-center me-2 mb-2 cursor-not-allowed{% else %} text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-small rounded-sm text-sm px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 dark:focus:ring-red-900{% endif %}"
+                            {% if event_data.is_registered %}disabled{% endif %}
+                        >
+                            {% if event_data.is_registered %} REGISTERED {% else %}
+                            REGISTER {% endif %}
+                        </button>
+                    </form>
+                    
+                    <form class="form" action="{% url 'register_event' event_data.event.pk %}" method="POST">
+                        {% csrf_token %}
+                        <button
+                            type="submit"
+                            class="{% if event_data.is_registered %}text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none font-small rounded-sm text-sm px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 {% else %}text-gray-700 font-medium rounded-md text-xs px-1 py-1 text-center me-2 mb-2 cursor-not-allowed{% endif %}"
+                            {% if event_data.is_registered %}{%else%}disabled {% endif %}
+                        >
+                            REMOVE
+                        </button>
+                    </form>
+                </div>
+            {%else%}
+            <button
+            class="text-red-700 hover:text-white border border-red-200 hover:bg-red-800 focus:outline-none focus:ring-red-300 font-small rounded-sm text-sm px-1 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-200 dark:focus:ring-red-900"
+        >
+         No available slots   
+        </button>
             {% endif %}
-
           </div>
           <p class="leading-relaxed mb-8">
             {{event_data.event.description |truncatewords:20}}
           </p>
           <div
-            class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full"
+            class="flex items-center flex-wrap pb-4 mb-4 border-b-2 border-gray-100 mt-auto w-full justify-between"
           >
             <a class="text-indigo-500 inline-flex items-center">
-              Show More
+              More
               <svg
                 class="w-4 h-4 ml-2"
                 viewBox="0 0 24 24"
@@ -72,41 +67,30 @@
               </svg>
             </a>
 
-            <span
-              class="text-gray-400 mr-3 inline-flex items-center ml-auto leading-none text-sm pr-3 py-1 border-r-2 border-gray-200"
+            <div>
+                <span
+              class="text-gray-400 text-sm border-r-2 border-gray-200 mr-1 ml-1"
             >
-              <svg
-                class="w-4 h-4 mr-1"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                viewBox="0 0 24 24"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
+              
               {{event_data.event.date}}
             </span>
+
             <span
-              class="text-gray-400 inline-flex items-center leading-none text-sm"
+              class="text-gray-400 text-sm border-r-2 border-gray-200 mr-1 ml-1"
             >
-              <svg
-                class="w-4 h-4 mr-1"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
-                ></path>
-              </svg>
               {{event_data.event.time}}
             </span>
+            <span
+              class="text-gray-400 text-sm border-r-2 border-gray-200 mr-1 ml-1"
+            >
+              {{event_data.event.location_name}}
+            </span>
+            <span
+              class="text-gray-400 text-sm  mr-1 ml-1"
+            >
+              slots: {{event_data.event.available_slots}}
+            </span>
+            </div>
           </div>
         </div>
       </div>

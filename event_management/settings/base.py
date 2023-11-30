@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "event_management.apps.accounts",
     "event_management.apps.events",
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -101,3 +102,13 @@ MEDIA_ROOT = BASE_DIR.parent.parent / "media"
 AUTH_USER_MODEL = "accounts.NewUser"
 
 LOGIN_URL = "/api/users/login/"
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Event Management API",
+    "DESCRIPTION": "this is event management api",
+    "VERSION": "1.0.0",
+}

@@ -8,7 +8,6 @@ The Event Management API allows users to view and interact with events, register
 
 ### 1. Get a List of Events
 
-#### Endpoint:
 
 - **URL:** `/api/events/`
 - **Method:** GET
@@ -18,7 +17,6 @@ The Event Management API allows users to view and interact with events, register
 
 ### 2. Get Event Details
 
-#### Endpoint:
 
 - **URL:** `/api/event/<int:event_id>/`
 - **Method:** GET
@@ -31,7 +29,6 @@ The Event Management API allows users to view and interact with events, register
 
 ### 3. Register for an Event
 
-#### Endpoint:
 
 - **URL:** `/api/event/register/<int:event_id>/`
 - **Method:** POST
@@ -44,8 +41,6 @@ The Event Management API allows users to view and interact with events, register
   - Status Code: 404 (Not Found) if the event with the given ID does not exist.
 
 ### 4. Get Registered Events for a User
-
-#### Endpoint:
 
 - **URL:** `/api/registered-events/`
 - **Method:** GET

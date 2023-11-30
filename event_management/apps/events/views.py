@@ -92,6 +92,7 @@ class EventSearch(View):
         return render(request, self.template_name, context)
 
 
+# APIVIEW
 class EventListView(APIView):
     def get(self, request, format=None):
         events = Event.objects.all()
@@ -104,7 +105,7 @@ class EventDetailsView(APIView):
         try:
             event = Event.objects.get(pk=event_id)
             event_serializer = EventSerializer(instance=event)
-            return Response(data=event_serializer, status=status.HTTP_200_OK)
+            return Response(data=event_serializer.data, status=status.HTTP_200_OK)
 
         except Event.DoesNotExist:
             return Response(
@@ -140,3 +141,13 @@ class RegisterEventView(APIView):
                     {"event": "No available slots for registration."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+
+
+class UserRegisteredEvents(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        registered_events = Event.objects.filter(registrations__user=user)
+        serializer = EventSerializer(registered_events, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
